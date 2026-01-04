@@ -7,12 +7,12 @@ import java.util.UUID;
  * Contains lightweight validation to avoid invalid states.
  */
 public class Task {
-    private final UUID id;
-    private String title;
-    private int durationMinutes;
-    private LocalTime startTime;
-    private LocalTime endTime;
-    private boolean done;
+    public final UUID id;
+    public String title;
+    public int durationMinutes;
+    public LocalTime startTime;
+    public LocalTime endTime;
+    public boolean done;
 
     /**
      * Create a task with explicit start and end times. Title must be non-empty.
@@ -43,7 +43,7 @@ public class Task {
         this.done = false;
     }
 
-    private int computeDurationMinutes() {
+    public int computeDurationMinutes() {
         if (startTime != null && endTime != null) {
             return (int) Duration.between(startTime, endTime).toMinutes();
         }

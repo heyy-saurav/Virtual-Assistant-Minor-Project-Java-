@@ -14,5 +14,5 @@ public final class Colors {
     public static final Color SUCCESS = new Color(46, 204, 113);
     public static final Color BUTTON = new Color(41, 128, 185);
 
-    private Colors() { /* no instances */ }
+    public Colors() { /* no instances */ }
 }

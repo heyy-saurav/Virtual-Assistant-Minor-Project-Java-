@@ -4,22 +4,22 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class VirtualAssistant {
-    private final Scanner in = new Scanner(System.in);
-    private final Map<LocalDate, List<Task>> schedules = new HashMap<>();
-    private String userName;
+    public final Scanner in = new Scanner(System.in);
+    public final Map<LocalDate, List<Task>> schedules = new HashMap<>();
+    public String userName;
 
     public static void main(String[] args) {
         new VirtualAssistant().start();
     }
 
-    private void start() {
+    public void start() {
         greetAndGetName();
         startReminderThread();
         mainLoop();
     }
 
     // Reminder thread: notifies 5 minutes before a task start and reminds for breaks
-    private void startReminderThread() {
+    public void startReminderThread() {
         // Use a background daemon thread so it doesn't block program exit
         Thread reminder = new Thread(() -> {
             // Track which task start reminders we've already shown (by id)
@@ -90,7 +90,7 @@ public class VirtualAssistant {
         reminder.start();
     }
 
-    private void greetAndGetName() {
+    public void greetAndGetName() {
         System.out.print("Hello! What's your name? \n");
         userName = in.nextLine().trim();
         if (userName.isEmpty()) userName = "User";
@@ -98,7 +98,7 @@ public class VirtualAssistant {
         System.out.println("How may I help you ?");
     }
 
-    private void mainLoop() {
+    public void mainLoop() {
         while (true) {
             printMainMenu();
             int choice = readInt("Choose an option: \n");
@@ -118,7 +118,7 @@ public class VirtualAssistant {
         }
     }
 
-    private void printMainMenu() {
+    public void printMainMenu() {
         System.out.println("\n----- Main Menu -----");
         System.out.println("\n1) What is the Time ?");
         System.out.println("2) Make schedule for the day");
@@ -129,7 +129,7 @@ public class VirtualAssistant {
     }
 
     // Option 1
-    private void showTimeDayDate() {
+    public void showTimeDayDate() {
         LocalDateTime now = LocalDateTime.now();
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("EEEE, MMM dd, yyyy");
         DateTimeFormatter tf = DateTimeFormatter.ofPattern("hh:mm:ss a");
@@ -139,7 +139,7 @@ public class VirtualAssistant {
     }
 
     // Option 2
-    private void createScheduleForDay() {
+    public void createScheduleForDay() {
         LocalDate date = readDate("Enter date for schedule (yyyy-MM-dd): ");
         List<Task> tasks = schedules.computeIfAbsent(date, d -> new ArrayList<>());
         System.out.println("Creating / editing schedule for " + date);
@@ -159,7 +159,7 @@ public class VirtualAssistant {
         System.out.println("Saved schedule for " + date + " (" + tasks.size() + " tasks).");
     }
 
-    private void addTaskToList(List<Task> tasks) {
+    public void addTaskToList(List<Task> tasks) {
         System.out.print("\nTask title: ");
         String title = in.nextLine().trim();
         if (title.isEmpty()) {
@@ -215,7 +215,7 @@ public class VirtualAssistant {
     }
 
     // Option 3
-    private void editScheduleMenu() {
+    public void editScheduleMenu() {
         LocalDate date = readDate("Enter date of schedule to edit (yyyy-MM-dd): ");
         List<Task> tasks = schedules.get(date);
         if (tasks == null || tasks.isEmpty()) {
@@ -243,7 +243,7 @@ public class VirtualAssistant {
         }
     }
 
-    private void deleteTask(List<Task> tasks) {
+    public void deleteTask(List<Task> tasks) {
         int idx = readInt("Enter task number to delete: ") - 1;
         if (idx < 0 || idx >= tasks.size()) {
             System.out.println("Invalid task number.");
@@ -253,7 +253,7 @@ public class VirtualAssistant {
         System.out.println("Removed: " + removed);
     }
 
-    private void modifyTask(List<Task> tasks) {
+    public void modifyTask(List<Task> tasks) {
         int idx = readInt("Enter task number to modify: ") - 1;
         if (idx < 0 || idx >= tasks.size()) {
             System.out.println("Invalid task number.");
@@ -314,7 +314,7 @@ public class VirtualAssistant {
     }
 
     // Option 4
-    private void showScheduleMenu() {
+    public void showScheduleMenu() {
         LocalDate date = readDate("Enter date to view schedule (yyyy-MM-dd): ");
         List<Task> tasks = schedules.getOrDefault(date, Collections.emptyList());
         if (tasks.isEmpty()) {
@@ -349,7 +349,7 @@ public class VirtualAssistant {
     }
 
     // Option 5
-    private void accomplishTasksMenu() {
+    public void accomplishTasksMenu() {
         LocalDate date = readDate("Enter date of schedule to mark accomplished (yyyy-MM-dd): ");
         List<Task> tasks = schedules.get(date);
         if (tasks == null || tasks.isEmpty()) {
@@ -381,7 +381,7 @@ public class VirtualAssistant {
         }
     }
 
-    private void markSingleTaskDone(List<Task> tasks) {
+    public void markSingleTaskDone(List<Task> tasks) {
         printTasksBrief(tasks);
         int idx = readInt("Enter task number completed: ") - 1;
         if (idx < 0 || idx >= tasks.size()) {
@@ -393,7 +393,7 @@ public class VirtualAssistant {
         System.out.println("Marked done: " + t.getTitle());
     }
 
-    private void markMultipleTasksDone(List<Task> tasks) {
+    public void markMultipleTasksDone(List<Task> tasks) {
         System.out.print("Enter task numbers separated by commas (e.g., 1,3,4): ");
         String line = in.nextLine().trim();
         if (line.isEmpty()) {
@@ -414,7 +414,7 @@ public class VirtualAssistant {
         System.out.println("Marked " + marked + " tasks done.");
     }
 
-    private void showProgress(List<Task> tasks) {
+    public void showProgress(List<Task> tasks) {
         long total = tasks.size();
         long done = tasks.stream().filter(Task::isDone).count();
         double percent = total == 0 ? 100.0 : (done * 100.0 / total);
@@ -430,7 +430,7 @@ public class VirtualAssistant {
     }
 
     // Helpers
-    private LocalDate readDate(String prompt) {
+    public LocalDate readDate(String prompt) {
         while (true) {
             System.out.print(prompt);
             String s = in.nextLine().trim();
@@ -442,7 +442,7 @@ public class VirtualAssistant {
         }
     }
 
-    private LocalTime readTime(String prompt) {
+    public LocalTime readTime(String prompt) {
         while (true) {
             System.out.print(prompt);
             String s = in.nextLine().trim();
@@ -454,7 +454,7 @@ public class VirtualAssistant {
         }
     }
 
-    private LocalTime readTimeAllowBlank(String prompt) {
+    public LocalTime readTimeAllowBlank(String prompt) {
         while (true) {
             System.out.print(prompt);
             String s = in.nextLine().trim();
@@ -467,7 +467,7 @@ public class VirtualAssistant {
         }
     }
 
-    private int readInt(String prompt) {
+    public int readInt(String prompt) {
         while (true) {
             System.out.print(prompt);
             String s = in.nextLine().trim();
@@ -480,7 +480,7 @@ public class VirtualAssistant {
     }
 
     // Time slot management helpers
-    private boolean hasOverlap(List<Task> tasks, LocalTime start, LocalTime end, Task excludeTask) {
+    public boolean hasOverlap(List<Task> tasks, LocalTime start, LocalTime end, Task excludeTask) {
         if (start == null || end == null) return false;
         return tasks.stream()
                 .filter(t -> t != excludeTask && !t.isDone()) // ignore done tasks and the task being modified
@@ -491,7 +491,7 @@ public class VirtualAssistant {
                 });
     }
 
-    private LocalTime findNextAvailableSlot(List<Task> tasks, int durationMinutes) {
+    public LocalTime findNextAvailableSlot(List<Task> tasks, int durationMinutes) {
         if (tasks.isEmpty()) return LocalTime.of(9, 0); // Default to 9 AM if no tasks
 
         // Get all tasks with times, sorted by start time
@@ -526,7 +526,7 @@ public class VirtualAssistant {
         return null;
     }
 
-    private void printTasksBrief(List<Task> tasks) {
+    public void printTasksBrief(List<Task> tasks) {
         System.out.println();  // Add space before task list
         for (int i = 0; i < tasks.size(); i++) {
             Task t = tasks.get(i);
@@ -536,7 +536,7 @@ public class VirtualAssistant {
         System.out.println();  // Add space after task list
     }
 
-    private void printTasksDetailed(List<Task> tasks) {
+    public void printTasksDetailed(List<Task> tasks) {
         System.out.println("\nFull schedule:\n");
         for (int i = 0; i < tasks.size(); i++) {
             Task t = tasks.get(i);
@@ -550,14 +550,14 @@ public class VirtualAssistant {
     }
 
     // Task class
-    private static class Task {
-        private final java.util.UUID id;
-        private String title;
+    public static class Task {
+        public final java.util.UUID id;
+        public String title;
         // optional fallback duration (minutes) if times are not provided
-        private int durationMinutes;
-        private LocalTime startTime;
-        private LocalTime endTime;
-        private boolean done;
+        public int durationMinutes;
+        public LocalTime startTime;
+        public LocalTime endTime;
+        public boolean done;
 
         Task(String title, LocalTime startTime, LocalTime endTime) {
             this.id = java.util.UUID.randomUUID();
